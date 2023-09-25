@@ -1,10 +1,18 @@
 version: "3.9"
 
+networks:
+  proxy_caddy:
+    external: true
+
 services:
   app:
     container_name: app
     image: app
     build: .
     restart: always
-    ports:
-      - "8080:80"
+    networks:
+      - proxy_caddy
+    labels:
+      caddy_1: "stream.sailehd.systems"
+      caddy_1.reverse_proxy: "{{upstreams 80}}"
+      caddy_1.tls.dns: "ionos 4dc281058e9648919a988315c84058fa.z0eKvfJSuUpeU-2W-quUCsM_6aSshAX8tdPrJ1NQUBtcaImOtoQCk82nT4kDWzBjj2l2PMo1vGXCc6vGW9bKHA"
